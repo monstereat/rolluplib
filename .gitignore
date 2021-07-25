@@ -1,0 +1,5 @@
+1 # dependencies
+2 node_modules
+3 
+4 # compiled output
+5 dist

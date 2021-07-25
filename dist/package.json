@@ -1,0 +1,23 @@
+{
+  "name": "rolluplib",
+  "version": "1.0.1",
+  "description": "前端工具库",
+  "main": "index.js",
+  "browser": "dist/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "tool"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "rollup": "^2.45.2",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "tslib": "^2.2.0",
+    "typescript": "^4.2.4"
+  }
+}
