@@ -1,0 +1,53 @@
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+/**
+ * 判断字符串是否是十六进制的颜色值
+ * @param value
+ */
+var isColor = function (value) {
+    return /^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(value);
+};
+
+exports.isColor = isColor;
+/**
+ * 判断字符串是否是十六进制的颜色值
+ * @param value
+ */
+var isColor = function (value) {
+    return /^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(value);
+};
+
+export { isColor };
+!function(e,o){"object"==typeof exports&&"undefined"!=typeof module?o(exports):"function"==typeof define&&define.amd?define(["exports"],o):o((e="undefined"!=typeof globalThis?globalThis:e||self).bstools={})}(this,(function(e){"use strict";e.isColor=function(e){return/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(e)},Object.defineProperty(e,"__esModule",{value:!0})}));
+{
+  "name": "@monstereat/lib",
+  "version": "1.0.1",
+  "description": "前端工具库",
+  "main": "dist/bstools.cjs.js",
+  "module": "dist/bstools.esm.js",
+  "browser": "dist/index.ts",
+  "scripts": {
+    "start": "rollup -c -w",
+    "build": "rollup -c && npm run copy",
+    "copy": "copy dist/bstools.esm.js demo && copy package.json dist",
+    "publish": "node scripts/publish",
+    "test": "ts-node test/test.ts"
+  },
+  "keywords": [
+    "bstools"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "commander": "^8.3.0",
+    "rollup": "^2.58.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "shelljs": "^0.8.4",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.4"
+  }
+}
