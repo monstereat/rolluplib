@@ -1,10 +1,10 @@
 {
   "name": "@monsterfeat/bstools",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "前端工具库",
   "main": "dist/bstools.cjs.js",
   "module": "dist/bstools.esm.js",
-  "browser": "dist/index.ts",
+  "browser": "dist/index.js",
   "scripts": {
     "start": "rollup -c -w",
     "build": "rollup -c && npm run copy",
@@ -26,5 +26,10 @@
     "shelljs": "^0.8.4",
     "tslib": "^2.3.1",
     "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-eslint": "^7.0.0",
+    "rollup-plugin-terser": "^7.0.2"
   }
 }

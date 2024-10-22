@@ -10,7 +10,214 @@ var isColor = function (value) {
     return /^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(value);
 };
 
+/**
+ * 空值校验
+ * @param value
+ */
+var isEmpty = function (value) {
+    return value === null || value === undefined || value === '';
+};
+/**
+ * 校验手机号
+ * @param phone
+ */
+var isPhoneNumber = function (phone) {
+    var phoneRegex = /^1[3-9]\d{9}$/;
+    return phoneRegex.test(phone);
+};
+/**
+ * 校验身份证
+ * @param idCard
+ */
+var isIDCard = function (idCard) {
+    var idCardRegex = /^[1-9]\d{5}(18|19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{3}(\d|X|x)$/;
+    return idCardRegex.test(idCard);
+};
+/**
+* 校验邮箱
+* @param email
+*/
+var isEmail = function (email) {
+    var emailRegex = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+    return emailRegex.test(email);
+};
+/**
+ * 校验企业注册号（统一社会信用代码）
+ * @param companyCode
+ */
+var isCompanyCode = function (companyCode) {
+    var companyCodeRegex = /^[A-Z0-9]{18}$/;
+    return companyCodeRegex.test(companyCode);
+};
+/**
+ * 校验邮政编码（中国）
+ * @param postalCode
+ */
+var isPostalCode = function (postalCode) {
+    var postalCodeRegex = /^[1-9]\d{5}(?!\d)$/;
+    return postalCodeRegex.test(postalCode);
+};
+/**
+ * 校验是否是数字
+ * @param value
+ */
+var isNumber = function (value) {
+    return !isNaN(value);
+};
+/**
+ * 是否为小数
+ * @param value
+ */
+function isDecimal(value) {
+    var strValue = value.toString();
+    var regex = /^\d+\.\d+$/;
+    return regex.test(strValue);
+}
+/**
+ * 校验是否保留一位小数
+ * @param value
+ */
+var isOneDecimal = function (value) {
+    var decimalRegex = /^\d+(\.\d{1})?$/;
+    return decimalRegex.test(value);
+};
+/**
+ *  校验是否保留两位小数
+ * @param value
+ */
+var isTwoDecimal = function (value) {
+    var decimalRegex = /^\d+(\.\d{1,2})?$/;
+    return decimalRegex.test(value);
+};
+/**
+ *  是否是正整数（不包括0）
+ * @param value
+ */
+function isIntInclZero(value) {
+    var strValue = value.toString();
+    var regex = /^[0-9]+$/;
+    return regex.test(strValue);
+}
+/**
+ *  是否是正整数（包括0）
+ * @param value
+ */
+function isIntExclZero(value) {
+    var strValue = value.toString();
+    var regex = /^[1-9][0-9]*$/;
+    return regex.test(strValue);
+}
+
+/**
+ *  车牌校验
+ * @param plateNumber
+ */
+function isLicensePlate(plateNumber) {
+    var regex = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$/;
+    return regex.test(plateNumber);
+}
+/**
+ *  车牌校验
+ * @param vin
+ */
+var isVIN = function (vin) {
+    var vinRegex = /^[A-HJ-NPR-Z0-9]{17}$/;
+    return vinRegex.test(vin);
+};
+/**
+ *  车牌校验
+ * @param engineNumber
+ */
+var isEngineNumber = function (engineNumber) {
+    var engineNumberRegex = /^[A-Za-z0-9]{6,20}$/;
+    return engineNumberRegex.test(engineNumber);
+};
+function Rad(d) {
+    return d * Math.PI / 180.0;
+}
+/**
+ *  计算两个经纬度距离
+ * @param lat1
+ */
+function getDistance(lat1, lng1, lat2, lng2) {
+    // lat1用户的纬度
+    // lng1用户的经度
+    // lat2商家的纬度
+    // lng2商家的经度
+    lat2 = Number(lat2);
+    lng2 = Number(lng2);
+    var radLat1 = Rad(lat1);
+    var radLat2 = Rad(lat2);
+    var a = radLat1 - radLat2;
+    var b = Rad(lng1) - Rad(lng2);
+    var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math
+        .pow(Math.sin(b / 2), 2)));
+    s = s * 6378.137;
+    s = Math.round(s * 10000) / 10000;
+    if (s < 1) {
+        s = s * 1000;
+        s = s.toFixed(0);
+        s = s + 'M';
+    }
+    else {
+        s = s.toFixed(2) + 'KM'; //保留两位小数
+    }
+    console.log('经纬度计算的距离:' + s);
+    return s;
+}
+
+/**
+ *  日期格式化
+ * @param dateFormat
+ */
+function dateFormat(date, format) {
+    format = format || 'yyyy-MM-dd hh:mm:ss';
+    if (date !== 'Invalid Date') {
+        var o = {
+            "M+": date.getMonth() + 1,
+            "d+": date.getDate(),
+            "h+": date.getHours(),
+            "m+": date.getMinutes(),
+            "s+": date.getSeconds(),
+            "q+": Math.floor((date.getMonth() + 3) / 3),
+            "S": date.getMilliseconds() //millisecond
+        };
+        if (/(y+)/.test(format))
+            format = format.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(format))
+                format = format.replace(RegExp.$1, RegExp.$1.length === 1 ? o[k] :
+                    ("00" + o[k]).substr(("" + o[k]).length));
+        return format;
+    }
+    return '';
+}
+/**
+ *  获取当前时间戳
+ */
+function dateNow() {
+    return dateFormat(new Date(), "yyyyMMddhhmmss");
+}
+
+exports.dateFormat = dateFormat;
+exports.dateNow = dateNow;
+exports.getDistance = getDistance;
 exports.isColor = isColor;
+exports.isCompanyCode = isCompanyCode;
+exports.isDecimal = isDecimal;
+exports.isEmail = isEmail;
+exports.isEmpty = isEmpty;
+exports.isEngineNumber = isEngineNumber;
+exports.isIDCard = isIDCard;
+exports.isIntExclZero = isIntExclZero;
+exports.isIntInclZero = isIntInclZero;
+exports.isLicensePlate = isLicensePlate;
+exports.isNumber = isNumber;
+exports.isOneDecimal = isOneDecimal;
+exports.isPhoneNumber = isPhoneNumber;
+exports.isPostalCode = isPostalCode;
+exports.isTwoDecimal = isTwoDecimal;
+exports.isVIN = isVIN;
 /**
  * 判断字符串是否是十六进制的颜色值
  * @param value
@@ -19,35 +226,194 @@ var isColor = function (value) {
     return /^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(value);
 };
 
-export { isColor };
-!function(e,o){"object"==typeof exports&&"undefined"!=typeof module?o(exports):"function"==typeof define&&define.amd?define(["exports"],o):o((e="undefined"!=typeof globalThis?globalThis:e||self).bstools={})}(this,(function(e){"use strict";e.isColor=function(e){return/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(e)},Object.defineProperty(e,"__esModule",{value:!0})}));
-{
-  "name": "@monstereat/lib",
-  "version": "1.0.1",
-  "description": "前端工具库",
-  "main": "dist/bstools.cjs.js",
-  "module": "dist/bstools.esm.js",
-  "browser": "dist/index.ts",
-  "scripts": {
-    "start": "rollup -c -w",
-    "build": "rollup -c && npm run copy",
-    "copy": "copy dist/bstools.esm.js demo && copy package.json dist",
-    "publish": "node scripts/publish",
-    "test": "ts-node test/test.ts"
-  },
-  "keywords": [
-    "bstools"
-  ],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "commander": "^8.3.0",
-    "rollup": "^2.58.3",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-typescript": "^1.0.1",
-    "shelljs": "^0.8.4",
-    "tslib": "^2.3.1",
-    "typescript": "^4.4.4"
-  }
+/**
+ * 空值校验
+ * @param value
+ */
+var isEmpty = function (value) {
+    return value === null || value === undefined || value === '';
+};
+/**
+ * 校验手机号
+ * @param phone
+ */
+var isPhoneNumber = function (phone) {
+    var phoneRegex = /^1[3-9]\d{9}$/;
+    return phoneRegex.test(phone);
+};
+/**
+ * 校验身份证
+ * @param idCard
+ */
+var isIDCard = function (idCard) {
+    var idCardRegex = /^[1-9]\d{5}(18|19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{3}(\d|X|x)$/;
+    return idCardRegex.test(idCard);
+};
+/**
+* 校验邮箱
+* @param email
+*/
+var isEmail = function (email) {
+    var emailRegex = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+    return emailRegex.test(email);
+};
+/**
+ * 校验企业注册号（统一社会信用代码）
+ * @param companyCode
+ */
+var isCompanyCode = function (companyCode) {
+    var companyCodeRegex = /^[A-Z0-9]{18}$/;
+    return companyCodeRegex.test(companyCode);
+};
+/**
+ * 校验邮政编码（中国）
+ * @param postalCode
+ */
+var isPostalCode = function (postalCode) {
+    var postalCodeRegex = /^[1-9]\d{5}(?!\d)$/;
+    return postalCodeRegex.test(postalCode);
+};
+/**
+ * 校验是否是数字
+ * @param value
+ */
+var isNumber = function (value) {
+    return !isNaN(value);
+};
+/**
+ * 是否为小数
+ * @param value
+ */
+function isDecimal(value) {
+    var strValue = value.toString();
+    var regex = /^\d+\.\d+$/;
+    return regex.test(strValue);
 }
+/**
+ * 校验是否保留一位小数
+ * @param value
+ */
+var isOneDecimal = function (value) {
+    var decimalRegex = /^\d+(\.\d{1})?$/;
+    return decimalRegex.test(value);
+};
+/**
+ *  校验是否保留两位小数
+ * @param value
+ */
+var isTwoDecimal = function (value) {
+    var decimalRegex = /^\d+(\.\d{1,2})?$/;
+    return decimalRegex.test(value);
+};
+/**
+ *  是否是正整数（不包括0）
+ * @param value
+ */
+function isIntInclZero(value) {
+    var strValue = value.toString();
+    var regex = /^[0-9]+$/;
+    return regex.test(strValue);
+}
+/**
+ *  是否是正整数（包括0）
+ * @param value
+ */
+function isIntExclZero(value) {
+    var strValue = value.toString();
+    var regex = /^[1-9][0-9]*$/;
+    return regex.test(strValue);
+}
+
+/**
+ *  车牌校验
+ * @param plateNumber
+ */
+function isLicensePlate(plateNumber) {
+    var regex = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$/;
+    return regex.test(plateNumber);
+}
+/**
+ *  车牌校验
+ * @param vin
+ */
+var isVIN = function (vin) {
+    var vinRegex = /^[A-HJ-NPR-Z0-9]{17}$/;
+    return vinRegex.test(vin);
+};
+/**
+ *  车牌校验
+ * @param engineNumber
+ */
+var isEngineNumber = function (engineNumber) {
+    var engineNumberRegex = /^[A-Za-z0-9]{6,20}$/;
+    return engineNumberRegex.test(engineNumber);
+};
+function Rad(d) {
+    return d * Math.PI / 180.0;
+}
+/**
+ *  计算两个经纬度距离
+ * @param lat1
+ */
+function getDistance(lat1, lng1, lat2, lng2) {
+    // lat1用户的纬度
+    // lng1用户的经度
+    // lat2商家的纬度
+    // lng2商家的经度
+    lat2 = Number(lat2);
+    lng2 = Number(lng2);
+    var radLat1 = Rad(lat1);
+    var radLat2 = Rad(lat2);
+    var a = radLat1 - radLat2;
+    var b = Rad(lng1) - Rad(lng2);
+    var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math
+        .pow(Math.sin(b / 2), 2)));
+    s = s * 6378.137;
+    s = Math.round(s * 10000) / 10000;
+    if (s < 1) {
+        s = s * 1000;
+        s = s.toFixed(0);
+        s = s + 'M';
+    }
+    else {
+        s = s.toFixed(2) + 'KM'; //保留两位小数
+    }
+    console.log('经纬度计算的距离:' + s);
+    return s;
+}
+
+/**
+ *  日期格式化
+ * @param dateFormat
+ */
+function dateFormat(date, format) {
+    format = format || 'yyyy-MM-dd hh:mm:ss';
+    if (date !== 'Invalid Date') {
+        var o = {
+            "M+": date.getMonth() + 1,
+            "d+": date.getDate(),
+            "h+": date.getHours(),
+            "m+": date.getMinutes(),
+            "s+": date.getSeconds(),
+            "q+": Math.floor((date.getMonth() + 3) / 3),
+            "S": date.getMilliseconds() //millisecond
+        };
+        if (/(y+)/.test(format))
+            format = format.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(format))
+                format = format.replace(RegExp.$1, RegExp.$1.length === 1 ? o[k] :
+                    ("00" + o[k]).substr(("" + o[k]).length));
+        return format;
+    }
+    return '';
+}
+/**
+ *  获取当前时间戳
+ */
+function dateNow() {
+    return dateFormat(new Date(), "yyyyMMddhhmmss");
+}
+
+export { dateFormat, dateNow, getDistance, isColor, isCompanyCode, isDecimal, isEmail, isEmpty, isEngineNumber, isIDCard, isIntExclZero, isIntInclZero, isLicensePlate, isNumber, isOneDecimal, isPhoneNumber, isPostalCode, isTwoDecimal, isVIN };
+!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"function"==typeof define&&define.amd?define(["exports"],e):e((t="undefined"!=typeof globalThis?globalThis:t||self).bstools={})}(this,(function(t){"use strict";function e(t){return t*Math.PI/180}function n(t,e){if(e=e||"yyyy-MM-dd hh:mm:ss","Invalid Date"!==t){var n={"M+":t.getMonth()+1,"d+":t.getDate(),"h+":t.getHours(),"m+":t.getMinutes(),"s+":t.getSeconds(),"q+":Math.floor((t.getMonth()+3)/3),S:t.getMilliseconds()};for(var r in/(y+)/.test(e)&&(e=e.replace(RegExp.$1,(t.getFullYear()+"").substr(4-RegExp.$1.length))),n)new RegExp("("+r+")").test(e)&&(e=e.replace(RegExp.$1,1===RegExp.$1.length?n[r]:("00"+n[r]).substr((""+n[r]).length)));return e}return""}t.dateFormat=n,t.dateNow=function(){return n(new Date,"yyyyMMddhhmmss")},t.getDistance=function(t,n,r,i){r=Number(r),i=Number(i);var o=e(t),s=e(r),u=o-s,a=e(n)-e(i),d=2*Math.asin(Math.sqrt(Math.pow(Math.sin(u/2),2)+Math.cos(o)*Math.cos(s)*Math.pow(Math.sin(a/2),2)));return d*=6378.137,(d=Math.round(1e4*d)/1e4)<1?(d=(d*=1e3).toFixed(0),d+="M"):d=d.toFixed(2)+"KM",console.log("经纬度计算的距离:"+d),d},t.isColor=function(t){return/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(t)},t.isCompanyCode=function(t){return/^[A-Z0-9]{18}$/.test(t)},t.isDecimal=function(t){var e=t.toString();return/^\d+\.\d+$/.test(e)},t.isEmail=function(t){return/^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/.test(t)},t.isEmpty=function(t){return null==t||""===t},t.isEngineNumber=function(t){return/^[A-Za-z0-9]{6,20}$/.test(t)},t.isIDCard=function(t){return/^[1-9]\d{5}(18|19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{3}(\d|X|x)$/.test(t)},t.isIntExclZero=function(t){var e=t.toString();return/^[1-9][0-9]*$/.test(e)},t.isIntInclZero=function(t){var e=t.toString();return/^[0-9]+$/.test(e)},t.isLicensePlate=function(t){return/^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$/.test(t)},t.isNumber=function(t){return!isNaN(t)},t.isOneDecimal=function(t){return/^\d+(\.\d{1})?$/.test(t)},t.isPhoneNumber=function(t){return/^1[3-9]\d{9}$/.test(t)},t.isPostalCode=function(t){return/^[1-9]\d{5}(?!\d)$/.test(t)},t.isTwoDecimal=function(t){return/^\d+(\.\d{1,2})?$/.test(t)},t.isVIN=function(t){return/^[A-HJ-NPR-Z0-9]{17}$/.test(t)},Object.defineProperty(t,"__esModule",{value:!0})}));
